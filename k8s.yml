@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: NodeApi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: NodeApi
+  template:
+    metadata:
+      labels:
+        app: NodeApi
+    spec:
+      containers:
+      - image: okteto/node:12
+        name: NodeApi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: NodeApi
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+spec:
+  type: ClusterIP  
+  ports:
+  - name: "NodeApi"
+    port: 3000
+  selector:
+    app: NodeApi
